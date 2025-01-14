@@ -1,0 +1,107 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+    <title>Transfer History</title>
+    <!-- Use static tag for stylesheets -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+</head>
+<body>
+    <input type="checkbox" id="menu-toggle">
+    <div class="sidebar">
+        <div class="side-header">
+            <h3>E<span>volut</span></h3>
+        </div>
+        <div class="side-content">
+            <div class="profile">
+                <!-- Use static tag for background image -->
+                <div class="profile-img bg-img" style="background-image: url('{% static 'img/3.jpeg' %}')"></div>
+                <h4>{{ user.username }}</h4> <!-- Dynamically show the logged-in user's username -->
+                <small>User</small>
+            </div>
+            <div class="side-menu">
+                <ul>
+                    <li><a href="{% url 'deposit' %}"><span class="las la-home"></span><small>Deposit</small></a></li>
+                    <li><a href="{% url 'withdraw' %}"><span class="las la-user-alt"></span><small>Withdraw</small></a></li>
+                    <li><a href="{% url 'send_transfer' %}"><span class="las la-envelope"></span><small>Send Transfer</small></a></li>
+                    <li><a href="{% url 'transfer_history' %}" class="active"><span class="las la-clipboard-list"></span><small>Transfer History</small></a></li>
+                    {% comment %}<li><a href="{% url 'profile' %}"><span class="las la-shopping-cart"></span><small>Profile</small></a></li>
+                    <li><a href="{% url 'support' %}"><span class="las la-tasks"></span><small>Support</small></a></li>{% endcomment %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="main-content">
+        <header>
+            <div class="header-content">
+                <label for="menu-toggle"><span class="las la-bars"></span></label>
+                <div class="header-menu">
+                    <label><span class="las la-search"></span></label>
+                    <div class="notify-icon"><span class="las la-envelope"></span><span class="notify">4</span></div>
+                    <div class="notify-icon"><span class="las la-bell"></span><span class="notify">3</span></div>
+                    <div class="user">
+                        <!-- Use static tag for background image -->
+                        <div class="bg-img" style="background-image: url('{% static 'img/1.jpeg' %}')"></div>
+                        <span class="las la-power-off"></span>
+                        <span>Logout</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <main>
+            <div class="page-header">
+                <h1>Transfer History</h1>
+                <small>Home / Transfer History</small>
+            </div>
+            <div class="page-content">
+                <div class="history-container">
+                    <h3>Your Transfer History</h3>
+                    <div class="table-responsive">
+                        <table width="100%">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th><span class="las la-sort"></span> SENDER</th>
+                                    <th><span class="las la-sort"></span> RECEIVER</th>
+                                    <th><span class="las la-sort"></span> AMOUNT</th>
+                                    <th><span class="las la-sort"></span> DATE</th>
+                                    <th><span class="las la-sort"></span> STATUS</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>#1001</td>
+                                    <td>John Doe</td>
+                                    <td>Jane Smith</td>
+                                    <td>$500</td>
+                                    <td>01 Dec, 2023</td>
+                                    <td><span class="paid">Completed</span></td>
+                                </tr>
+                                <tr>
+                                    <td>#1002</td>
+                                    <td>Mary Johnson</td>
+                                    <td>{{ user.username }}</td> <!-- Dynamically show the logged-in user's name -->
+                                    <td>$1200</td>
+                                    <td>30 Nov, 2023</td>
+                                    <td><span class="failed">Failed</span></td>
+                                </tr>
+                                <tr>
+                                    <td>#1003</td>
+                                    <td>Michael Brown</td>
+                                    <td>Chris White</td>
+                                    <td>$350</td>
+                                    <td>29 Nov, 2023</td>
+                                    <td><span class="pending">Pending</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

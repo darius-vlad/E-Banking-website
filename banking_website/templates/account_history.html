@@ -1,0 +1,92 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+    <title>Account History</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+</head>
+<body>
+    <input type="checkbox" id="menu-toggle">
+    <div class="sidebar">
+        <div class="side-header">
+            <h3>E<span>volut</span></h3>
+        </div>
+        <div class="side-content">
+            <div class="profile">
+                <div class="profile-img bg-img" style="background-image: url('{% static 'img/3.jpeg' %}')"></div>
+                <h4>{{ user.username }}</h4> <!-- Dynamically show the logged-in user's username -->
+                <small>User</small>
+            </div>
+            <div class="side-menu">
+                <ul>
+                    <li><a href="{% url 'deposit' %}"><span class="las la-home"></span><small>Deposit</small></a></li>
+                    <li><a href="{% url 'withdraw' %}"><span class="las la-user-alt"></span><small>Withdraw</small></a></li>
+                    <li><a href="{% url 'send_transfer' %}"><span class="las la-envelope"></span><small>Send Transfer</small></a></li>
+                    <li><a href="{% url 'account_history' %}" class="active"><span class="las la-clipboard-list"></span><small>Account History</small></a></li>
+                    {% comment %}<li><a href="{% url 'profile' %}"><span class="las la-shopping-cart"></span><small>Profile</small></a></li>
+                    <li><a href="{% url 'support' %}"><span class="las la-tasks"></span><small>Support</small></a></li>{% endcomment %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="main-content">
+        <header>
+            <div class="header-content">
+                <label for="menu-toggle"><span class="las la-bars"></span></label>
+                <div class="header-menu">
+                    <label><span class="las la-search"></span></label>
+                    <div class="notify-icon"><span class="las la-envelope"></span><span class="notify">4</span></div>
+                    <div class="notify-icon"><span class="las la-bell"></span><span class="notify">3</span></div>
+                    <div class="user">
+                        <div class="bg-img" style="background-image: url('{% static 'img/1.jpeg' %}')"></div>
+                        <span class="las la-power-off"></span>
+                        <span>Logout</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <main>
+            <div class="page-header">
+                <h1>Account History</h1>
+                <small>Home / Account History</small>
+            </div>
+            <div class="page-content">
+                <div class="history-container">
+                    <h3>Your Bank Accounts</h3>
+                    <div class="table-responsive">
+                        <table width="100%">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th><span class="las la-sort"></span> ACCOUNT NUMBER</th>
+                                    <th><span class="las la-sort"></span> ACCOUNT TYPE</th>
+                                    <th><span class="las la-sort"></span> BALANCE</th>
+                                    <th><span class="las la-sort"></span> DATE CREATED</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for account in accounts %}
+                                <tr>
+                                    <td>#{{ account.id }}</td>
+                                    <td>{{ account.account_number }}</td>
+                                    <td>{{ account.get_account_type_display }}</td>
+                                    <td>${{ account.balance }}</td>
+                                    <td>{{ account.created_at|date:"d M, Y" }}</td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="5">You don't have any accounts yet.</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>
