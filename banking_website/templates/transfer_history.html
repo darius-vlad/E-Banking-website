@@ -24,12 +24,13 @@
             </div>
             <div class="side-menu">
                 <ul>
-                    <li><a href="{% url 'deposit' %}"><span class="las la-home"></span><small>Deposit</small></a></li>
-                    <li><a href="{% url 'withdraw' %}"><span class="las la-user-alt"></span><small>Withdraw</small></a></li>
-                    <li><a href="{% url 'send_transfer' %}"><span class="las la-envelope"></span><small>Send Transfer</small></a></li>
+                    <li><a href="{% url 'deposit' %}" ><span class="las la-home"></span><small>Deposit</small></a></li>
+                    <li><a href="{% url 'withdraw' %}" ><span class="las la-user-alt"></span><small>Withdraw</small></a></li>
+                    <li><a href="{% url 'send_transfer' %}" ><span class="las la-envelope"></span><small>Send Transfer</small></a></li>
                     <li><a href="{% url 'transfer_history' %}" class="active"><span class="las la-clipboard-list"></span><small>Transfer History</small></a></li>
-                    {% comment %}<li><a href="{% url 'profile' %}"><span class="las la-shopping-cart"></span><small>Profile</small></a></li>
-                    <li><a href="{% url 'support' %}"><span class="las la-tasks"></span><small>Support</small></a></li>{% endcomment %}
+                    <li><a href="{% url 'create_account' %}"><span class="las la-shopping-cart"></span><small>Create Account</small></a></li>
+                    <li><a href="{% url 'account_history' %}"><span class="las la-tasks"></span><small>See Accounts</small></a></li>
+                    <li><a href="{% url 'view_profile' %}" ><span class="las la-user"></span><small>View Profile</small></a></li>
                 </ul>
             </div>
         </div>
@@ -72,30 +73,16 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>#1001</td>
-                                    <td>John Doe</td>
-                                    <td>Jane Smith</td>
-                                    <td>$500</td>
-                                    <td>01 Dec, 2023</td>
-                                    <td><span class="paid">Completed</span></td>
-                                </tr>
-                                <tr>
-                                    <td>#1002</td>
-                                    <td>Mary Johnson</td>
-                                    <td>{{ user.username }}</td> <!-- Dynamically show the logged-in user's name -->
-                                    <td>$1200</td>
-                                    <td>30 Nov, 2023</td>
-                                    <td><span class="failed">Failed</span></td>
-                                </tr>
-                                <tr>
-                                    <td>#1003</td>
-                                    <td>Michael Brown</td>
-                                    <td>Chris White</td>
-                                    <td>$350</td>
-                                    <td>29 Nov, 2023</td>
-                                    <td><span class="pending">Pending</span></td>
-                                </tr>
+                                {% for transfer in transfer_history %}
+                                    <tr>
+                                        <td>#{{ transfer.id }}</td>
+                                        <td>{{ transfer.sender.username }}</td>
+                                        <td>{{ transfer.receiver.username }}</td>
+                                        <td>${{ transfer.amount }}</td>
+                                        <td>{{ transfer.timestamp|date:"d M, Y" }}</td>
+                                        <td>Completed</td>
+                                    </tr>
+                                {% endfor %}
                             </tbody>
                         </table>
                     </div>

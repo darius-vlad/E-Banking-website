@@ -22,11 +22,13 @@
             </div>
             <div class="side-menu">
                 <ul>
-                    <li><a href="{% url 'deposit' %}"><span class="las la-home"></span><small>Deposit</small></a></li>
-                    <li><a href="{% url 'withdraw' %}"><span class="las la-user-alt"></span><small>Withdraw</small></a></li>
-                    <li><a href="{% url 'send_transfer' %}"><span class="las la-envelope"></span><small>Send Transfer</small></a></li>
-                    <li><a href="{% url 'transfer_history' %}"><span class="las la-clipboard-list"></span><small>Transfer History</small></a></li>
-                    <li><a href="{% url 'create_account' %}"><span class="las la-shopping-cart"></span><small>Profile</small></a></li>
+                  <li><a href="{% url 'deposit' %}" ><span class="las la-home"></span><small>Deposit</small></a></li>
+                    <li><a href="{% url 'withdraw' %}" ><span class="las la-user-alt"></span><small>Withdraw</small></a></li>
+                    <li><a href="{% url 'send_transfer' %}" ><span class="las la-envelope"></span><small>Send Transfer</small></a></li>
+                    <li><a href="{% url 'transfer_history' %}" ><span class="las la-clipboard-list"></span><small>Transfer History</small></a></li>
+                    <li><a href="{% url 'create_account' %}" class="active"><span class="las la-shopping-cart"></span><small>Create Account</small></a></li>
+                    <li><a href="{% url 'account_history' %}"><span class="las la-tasks"></span><small>See Accounts</small></a></li>
+                    <li><a href="{% url 'view_profile' %}" ><span class="las la-user"></span><small>View Profile</small></a></li>
 
                 </ul>
             </div>

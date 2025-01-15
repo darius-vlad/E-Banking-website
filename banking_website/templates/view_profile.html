@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Send Transfer</title>
+    <title>View Profile</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
     <style>
@@ -64,17 +64,18 @@
             </div>
             <div class="side-menu">
                 <ul>
-                    <li><a href="{% url 'deposit' %}" ><span class="las la-home"></span><small>Deposit</small></a></li>
-                    <li><a href="{% url 'withdraw' %}" ><span class="las la-user-alt"></span><small>Withdraw</small></a></li>
-                    <li><a href="{% url 'send_transfer' %}" class="active"><span class="las la-envelope"></span><small>Send Transfer</small></a></li>
+                    <li><a href="{% url 'deposit' %}"><span class="las la-home"></span><small>Deposit</small></a></li>
+                    <li><a href="{% url 'withdraw' %}"><span class="las la-user-alt"></span><small>Withdraw</small></a></li>
+                    <li><a href="{% url 'send_transfer' %}"><span class="las la-envelope"></span><small>Send Transfer</small></a></li>
                     <li><a href="{% url 'transfer_history' %}"><span class="las la-clipboard-list"></span><small>Transfer History</small></a></li>
                     <li><a href="{% url 'create_account' %}"><span class="las la-shopping-cart"></span><small>Create Account</small></a></li>
                     <li><a href="{% url 'account_history' %}"><span class="las la-tasks"></span><small>See Accounts</small></a></li>
-                    <li><a href="{% url 'view_profile' %}" ><span class="las la-user"></span><small>View Profile</small></a></li>
+                    <li><a href="{% url 'view_profile' %}" class="active"><span class="las la-user"></span><small>View Profile</small></a></li>
                 </ul>
             </div>
         </div>
     </div>
+
     <div class="main-content">
         <header>
             <div class="header-content">
@@ -91,40 +92,39 @@
                 </div>
             </div>
         </header>
+
         <main>
             <div class="page-header">
-                <h1>Send Transfer</h1>
-                <small>Home / Send Transfer</small>
+                <h1>Profile Details</h1>
+                <small>Home / Profile</small>
             </div>
+
             <div class="page-content">
                 <div class="form-container">
-                    <h3>Send a Transfer</h3>
-                    <form action="{% url 'send_transfer' %}" method="POST">
-                        {% csrf_token %}
-                        <label for="account-number">Sender Account Number:</label>
-                        <input type="text" id="account-number" name="sender_account_number" placeholder="Enter Sender Account Number" required>
+                    <h3>Profile Information</h3>
+                    <div>
+                        <strong>Username:</strong> {{ username }}
+                    </div>
+                    <div>
+                        <strong>Email:</strong> {{ email }}
+                    </div>
+                    <div>
+                        <strong>Balance:</strong> {{ balance }}
+                    </div>
 
-                        <label for="receiver-number">Receiver Account Number:</label>
-                        <input type="text" id="receiver-number" name="receiver_account_number" placeholder="Enter Receiver Account Number" required>
-
-                        <label for="amount">Amount:</label>
-                        <input type="number" id="amount" name="amount" placeholder="Enter Amount" required>
-
-                        <button type="submit">Send Transfer</button>
-                    </form>
-
-                    <!-- Modal -->
-                    {% if messages %}
-                        <div class="modal" id="message-modal">
-                            <div class="modal-content">
-                                {% for message in messages %}
-                                    <p>{{ message }}</p>
-                                {% endfor %}
-                                <button class="close-btn" onclick="closeModal()">Close</button>
-                            </div>
-                        </div>
-                    {% endif %}
                 </div>
+
+                <!-- Modal -->
+                {% if messages %}
+                    <div class="modal" id="message-modal">
+                        <div class="modal-content">
+                            {% for message in messages %}
+                                <p>{{ message }}</p>
+                            {% endfor %}
+                            <button class="close-btn" onclick="closeModal()">Close</button>
+                        </div>
+                    </div>
+                {% endif %}
             </div>
         </main>
     </div>

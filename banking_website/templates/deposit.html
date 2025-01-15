@@ -5,8 +5,50 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Deposit</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+    <style>
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 0.3s;
+        }
+
+        .modal .close-btn {
+            background: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
 </head>
 <body>
     <input type="checkbox" id="menu-toggle">
@@ -16,22 +58,25 @@
         </div>
         <div class="side-content">
             <div class="profile">
+                <!-- Dynamically show the logged-in user's profile image -->
                 <div class="profile-img bg-img" style="background-image: url('{% static 'img/3.jpeg' %}')"></div>
-                <h4>{{ request.user.username }}</h4>
+                <h4>{{ request.user.username }}</h4>  <!-- Display the logged-in user's username -->
                 <small>User</small>
             </div>
             <div class="side-menu">
                 <ul>
-                    <li><a href="/deposit/" class="active"><span class="las la-home"></span><small>Deposit</small></a></li>
+                   <li><a href="{% url 'deposit' %}" class="active"><span class="las la-home"></span><small>Deposit</small></a></li>
                     <li><a href="{% url 'withdraw' %}"><span class="las la-user-alt"></span><small>Withdraw</small></a></li>
                     <li><a href="{% url 'send_transfer' %}"><span class="las la-envelope"></span><small>Send Transfer</small></a></li>
                     <li><a href="{% url 'transfer_history' %}"><span class="las la-clipboard-list"></span><small>Transfer History</small></a></li>
-                    <li><a href="{% url 'create_account' %}"><span class="las la-shopping-cart"></span><small>Create account</small></a></li>
-                    <li><a href="{% url 'account_history' %}"><span class="las la-tasks"></span><small>See accounts</small></a></li>
+                    <li><a href="{% url 'create_account' %}"><span class="las la-shopping-cart"></span><small>Create Account</small></a></li>
+                    <li><a href="{% url 'account_history' %}"><span class="las la-tasks"></span><small>See Accounts</small></a></li>
+                    <li><a href="{% url 'view_profile' %}" ><span class="las la-user"></span><small>View Profile</small></a></li>
                 </ul>
             </div>
         </div>
     </div>
+
     <div class="main-content">
         <header>
             <div class="header-content">
@@ -48,26 +93,28 @@
                 </div>
             </div>
         </header>
+
         <main>
             <div class="page-header">
                 <h1>Deposit</h1>
                 <small>Home / Deposit</small>
             </div>
+
             <div class="page-content">
                 <div class="form-container">
-                    <h3>Make a Deposit</h3>
-                    <form method="POST" action="{% url 'deposit' %}">
+                    <h3>Deposit Funds</h3>
+                    <form method="POST">
                         {% csrf_token %}
                         <label for="account">Select Account:</label>
                         <select id="account" name="account" required>
-                            <option value="">--Select Account--</option>
+                            <option value="" disabled selected>Select your bank account</option>
                             {% for account in accounts %}
-                                <option value="{{ account.id }}">{{ account.account_number }} ({{ account.account_type }})</option>
+                                <option value="{{ account.id }}">{{ account.account_number }} - Balance: ${{ account.balance }}</option>
                             {% endfor %}
                         </select>
 
                         <label for="amount">Amount:</label>
-                        <input type="number" id="amount" name="amount" placeholder="Enter Amount" required min="0.01" step="0.01">
+                        <input type="number" id="amount" name="amount" placeholder="Enter Amount" required min="0" step="0.01">
 
                         <button type="submit">Deposit</button>
                     </form>
@@ -75,5 +122,36 @@
             </div>
         </main>
     </div>
+
+    <!-- Modal for messages -->
+    {% if messages %}
+        <div class="modal" id="message-modal">
+            <div class="modal-content">
+                {% for message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+                <button class="close-btn" onclick="closeModal()">Close</button>
+            </div>
+        </div>
+    {% endif %}
+
+    <script>
+        // Show the modal if messages are present
+        window.onload = function() {
+            const modal = document.getElementById('message-modal');
+            if (modal) {
+                modal.style.display = 'flex';
+            }
+        };
+
+        // Close the modal when the button is clicked
+        function closeModal() {
+            const modal = document.getElementById('message-modal');
+            if (modal) {
+                modal.style.display = 'none';
+            }
+        }
+    </script>
+
 </body>
 </html>

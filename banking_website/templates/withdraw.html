@@ -7,6 +7,41 @@
     <title>Withdraw</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="stylesheet" href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css">
+    <style>
+        /* Modal styles */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed;
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.4); /* Black with transparency */
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 400px;
+            text-align: center;
+        }
+        .modal .close {
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            float: right;
+        }
+        .modal .close:hover,
+        .modal .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
     <input type="checkbox" id="menu-toggle">
@@ -23,12 +58,14 @@
             </div>
             <div class="side-menu">
                 <ul>
-                    <li><a href="{% url 'deposit' %}"><span class="las la-home"></span><small>Deposit</small></a></li>
+                     <li><a href="{% url 'deposit' %}" ><span class="las la-home"></span><small>Deposit</small></a></li>
                     <li><a href="{% url 'withdraw' %}" class="active"><span class="las la-user-alt"></span><small>Withdraw</small></a></li>
-                    {% comment %}<li><a href="{% url 'send_transfer' %}"><span class="las la-envelope"></span><small>Send Transfer</small></a></li>
+                    <li><a href="{% url 'send_transfer' %}"><span class="las la-envelope"></span><small>Send Transfer</small></a></li>
                     <li><a href="{% url 'transfer_history' %}"><span class="las la-clipboard-list"></span><small>Transfer History</small></a></li>
-                    <li><a href="{% url 'profile' %}"><span class="las la-shopping-cart"></span><small>Profile</small></a></li>
-                    <li><a href="{% url 'support' %}"><span class="las la-tasks"></span><small>Support</small></a></li>{% endcomment %}
+                    <li><a href="{% url 'create_account' %}"><span class="las la-shopping-cart"></span><small>Create Account</small></a></li>
+                    <li><a href="{% url 'account_history' %}"><span class="las la-tasks"></span><small>See Accounts</small></a></li>
+                    <li><a href="{% url 'view_profile' %}" ><span class="las la-user"></span><small>View Profile</small></a></li>
+                    <!-- Add other menu items here -->
                 </ul>
             </div>
         </div>
@@ -58,16 +95,65 @@
             <div class="page-content">
                 <div class="form-container">
                     <h3>Withdraw Funds</h3>
-                    <form action="submit_withdraw.html" method="POST">
-                        <label for="account-number">Account Number:</label>
-                        <input type="text" id="account-number" name="account_number" placeholder="Enter Account Number">
+                    <form action="{% url 'withdraw' %}" method="POST">
+                        {% csrf_token %}
+                        <label for="account-number">Select Account:</label>
+                        <select id="account-number" name="sender_account" required>
+                            <option value="" disabled selected>Select your bank account</option>
+                            {% for account in user_accounts %}
+                                <option value="{{ account.id }}">{{ account.account_number }} - {{ account.account_type }} (Balance: {{ account.balance }})</option>
+                            {% endfor %}
+                        </select>
+
                         <label for="amount">Amount:</label>
-                        <input type="number" id="amount" name="amount" placeholder="Enter Amount">
+                        <input type="number" id="amount" name="amount" placeholder="Enter Amount" required min="0" step="0.01">
+
                         <button type="submit">Withdraw</button>
                     </form>
                 </div>
             </div>
         </main>
     </div>
+
+    <!-- Modal for Success/Error -->
+    <div id="withdrawModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3 id="modalMessage"></h3> <!-- The message will be displayed here -->
+        </div>
+    </div>
+
+    <script>
+        // Get the modal
+        var modal = document.getElementById("withdrawModal");
+
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("close")[0];
+
+        // Function to show modal with a message
+        function showModal(message) {
+            document.getElementById("modalMessage").textContent = message;
+            modal.style.display = "block";
+        }
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        // Optionally, you can use Django messages to trigger the modal
+        {% if messages %}
+            {% for message in messages %}
+                showModal("{{ message }}");
+            {% endfor %}
+        {% endif %}
+    </script>
 </body>
 </html>

@@ -23,9 +23,10 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('login/', login_or_signup, name='login_or_signup'),
     path('deposit/', views.deposit_view, name='deposit'),
-    path('withdraw/', views.withdraw_view, name='withdraw'),
-    path('send_transfer/', views.send_transfer_view, name='send_transfer'),
+    path('withdraw/', views.withdraw, name='withdraw'),
+    path('send_transfer/', views.send_transfer, name='send_transfer'),
     path('transfer_history/', views.transfer_history_view, name='transfer_history'),
     path('create_account/', views.create_account_view, name='create_account'),
-    path('account_history/', views.account_history_view, name='account_history')
+    path('account_history/', views.account_history_view, name='account_history'),
+    path('view-profile/', views.view_profile, name='view_profile')
 ]
